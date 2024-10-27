@@ -1,5 +1,5 @@
 from django import forms
-from posts.models import Post
+from posts.models import Post, Tag
 class PostForm(forms.Form):
     image = forms.ImageField()
     title = forms.CharField()
@@ -25,3 +25,34 @@ class PostForm2(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'rate', 'image', 'tags']
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(
+        required=False,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Введите текст поиска",
+                "class": "form-control",
+            }
+        )
+    )
+    tag = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    orderings = (
+        ("title", "По названию"),
+        ("-title", "По названию в обратном порядке"),
+        ("rate", "По рейтингу"),
+        ("-rate", "По рейтингу в обратном порядке"),
+        ("created_at", "По дате создания"),
+        ("-created_at", "По дате создания в обратном порядке"),
+    )
+    ordering = forms.ChoiceField(
+        required=False,
+        choices=orderings,
+        widget=forms.Select(attrs={"class": "form-control"})
+    )

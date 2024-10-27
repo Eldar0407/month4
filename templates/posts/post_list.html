@@ -1,21 +1,33 @@
 {% extends 'base.html' %}
 
-{%load static%}
+{% load static %}
 
-{%block content%}
-    {%for post in posts%}
+{% block content %}
+  <form action="/posts/" method="get">
+      {{ form.as_p }}
+      <button type="submit">Search</button>
+  </form>
+
+  {% for post in posts %}
     <div class="card" style="width: 18rem;">
-      {%if post.image%}
-      <img src="{{post.image.url}}" class="card-img-top" alt="...">
-      {%else%}
-      <img src={% static 'images.png' %}>
-      {%endif%}
+      {% if post.image %}
+        <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+      {% else %}
+        <img src="{% static 'images.png' %}" class="card-img-top" alt="...">
+      {% endif %}
       <div class="card-body">
-        <h5 class="card-title">{{post.title}}</h5>
-        <p class="card-text">{{post.content}}</p>
-        <p class="card-text">{{post.rate}}</p>
-        <a href="/posts/{{post.id}}" class="btn btn-primary">Go to post</a>
+        <h5 class="card-title">{{ post.title }}</h5>
+        <p class="card-text">{{ post.content }}</p>
+        <p class="card-text">{{ post.rate }}</p>
+        <a href="/posts/{{ post.id }}" class="btn btn-primary">Go to post</a>
       </div>
     </div>
-    {%endfor%}
-{%endblock%}
+  {% endfor %}
+
+  <div style="display:flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
+    {% for i in max_pages %}
+        <a href="?{{ query_params.urlencode }}&page={{ i }}" class="btn btn-primary">{{ i }}</a>
+    {% endfor %}
+  </div>
+  <p>Current filters: {{ request.GET }}</p>
+{% endblock %}
