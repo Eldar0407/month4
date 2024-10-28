@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content-section" style="display: flex; justify-content: center">
+<h1 class="title" id="site-title">Profile</h1>
+    <div class="media">
+        <img style="height: 300px; " class="rounded-circle account-img" src="{{ user.profile.image.url }}" alt="">
+        <div class="media-body">
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+            <p class="text-secondary">{{ user.profile.age }} Age</p>
+        </div>
+    </div>
+</div>
+    {% for post in posts %}
+        <div class="card" style="width: 18rem;">
+        {% if post.image %}
+            <img src="{{ post.image.url }}" class="card-img-top" alt="...">
+            {% else %}
+                <img src="{% static 'placeholder.jpg' %}" alt="">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.content }}</p>
+                <p class="card-text">{{ post.rate }}</p>
+                <p class="card-text">{{ post.created_at }}</p>
+                <p class="card-text">{{ post.updated_at }}</p>
+                <a href="/posts/{{post.id}}" class="btn btn-primary">Go to post</a>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+
+

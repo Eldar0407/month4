@@ -1,6 +1,5 @@
 from django.db import models
-
-
+from django.contrib.auth.models import User
 """
 Posts.objects.all() - все объекты из таблицы
 
@@ -19,7 +18,9 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+
 class Post(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts", null=True)
     image = models.ImageField(null=True, blank=True)
     title = models.CharField(max_length=70)
     content = models.TextField(null=True, blank=True)
